@@ -4,5 +4,4 @@ export {
   PersistentWorldData,
   World,
   WorldFactoryClient,
-  WorldType,
 } from "./world";

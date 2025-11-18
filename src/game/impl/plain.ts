@@ -2,7 +2,8 @@ import { CellCoordinate, NEIGHBORS } from ".";
 import { Chunk, ChunkFactory } from "../chunk";
 import { CHUNK_SIZE } from "../conf";
 import { GameSizeError, OutOfBoundsError } from "../error";
-import { World, WorldFactory, WorldType } from "../world";
+import { World, WorldFactory } from "../world";
+import { WorldType } from "../../constants";
 
 class PlainWorld implements World {
   private chunks: Map<string, Chunk> = new Map();

@@ -1,12 +1,7 @@
+import { WorldType } from "../constants";
 import { InfiniteWorldFactory } from "./impl";
 import { PlainWorldFactory } from "./impl/plain";
 import { ToroidalWorldFactory } from "./impl/torioidal";
-
-export const enum WorldType {
-  Infinite = "infinite",
-  Plain = "plain",
-  Toroidal = "toroidal",
-}
 
 export type PersistentWorldData<T> = T & {
   worldType: WorldType;

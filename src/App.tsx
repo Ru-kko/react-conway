@@ -1,6 +1,7 @@
 import { useBoardStore, usePreferencesStore } from "./store";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { WorldFactoryClient, WorldType } from "./game";
+import { WorldFactoryClient } from "./game";
+import { WorldType } from "./constants";
 import { BoardView } from "./components/board";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect } from "react";

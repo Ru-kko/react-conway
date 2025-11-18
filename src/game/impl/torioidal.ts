@@ -1,7 +1,8 @@
 import { CellCoordinate, NEIGHBORS } from ".";
 import { Chunk , ChunkFactory } from "../chunk";
 import { GameSizeError, OutOfBoundsError } from "../error";
-import { World, WorldFactory, WorldType } from "../world";
+import { World, WorldFactory } from "../world";
+import { WorldType } from "../../constants";
 import { CHUNK_SIZE } from "../conf";
 
 class ToroidalWorld implements World {

@@ -1,4 +1,5 @@
-import { World, WorldType } from "./world";
+import { WorldType } from "../constants";
+import { World } from "./world";
 
 export interface Engine {
   step(): void;
