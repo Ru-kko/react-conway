@@ -65,7 +65,6 @@ class GameChunk implements Chunk {
   getAliveCells(): Coordinate[] {
     const result: Coordinate[] = [];
 
-    console.log(this.serialize());
     for (const packed of this.cells) {
       result.push(this.unPackCoordinate(packed));
     }
