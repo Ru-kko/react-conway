@@ -1,5 +1,5 @@
 import { WorldType } from "../constants";
-import { InfiniteWorldFactory } from "./impl";
+import { InfiniteWorldFactory, UltraSmallWorldFactory } from "./impl";
 import { PlainWorldFactory } from "./impl/plain";
 import { ToroidalWorldFactory } from "./impl/torioidal";
 
@@ -38,6 +38,8 @@ export class WorldFactoryClient {
         return new PlainWorldFactory() as WorldFactory<T>;
       case WorldType.Toroidal:
         return new ToroidalWorldFactory() as WorldFactory<T>;
+      case WorldType.UltraSmall:
+        return new UltraSmallWorldFactory() as WorldFactory<T>;
       case WorldType.Infinite:
       default:
         return new InfiniteWorldFactory() as WorldFactory<T>;

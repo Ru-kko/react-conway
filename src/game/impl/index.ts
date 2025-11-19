@@ -23,3 +23,6 @@ export const NEIGHBORS = [
 ];
 
 export * from "./infinite";
+export * from "./plain";
+export * from "./torioidal";
+export * from "./ultrasmall";

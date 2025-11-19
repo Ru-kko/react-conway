@@ -3,11 +3,12 @@ import { GameSizeError, OutOfBoundsError, World } from "..";
 import { WorldType } from "../../constants";
 import { Chunk, ChunkFactory } from "../chunk";
 import { CHUNK_SIZE } from "../conf";
+import { WorldFactory } from "../world";
 
 /**
  * A minimal world implementation to make testing easier.
  */
-export class UltraSmallWorld implements World {
+class UltraSmallWorld implements World {
   private chunk: Chunk;
 
   constructor(data: string, private size: number = 16) {
@@ -77,5 +78,27 @@ export class UltraSmallWorld implements World {
 
       cb(x, y, alive, neighbors);
     };
+
+    this.chunk.getAliveCells().forEach((cell) => {
+      const { x, y } = cell.real;
+      add(x, y);
+
+      for (const [dx, dy] of NEIGHBORS) {
+        add(x + dx, y + dy);
+      }
+    });
   }
+}
+
+export class UltraSmallWorldFactory implements WorldFactory<{size: number, data?: string}> {
+
+  loadWorld(_:Map<string, string>, options: { size: number; data: string; }): World {
+    console.warn("UltraSmallWorldFactory.loadWorld called with chunkData, which will be ignored.");
+    return new UltraSmallWorld(options.data, options.size);
+  }
+
+  createNew(options: { size: number; data: string; }): World {
+    return new UltraSmallWorld(options.data, options.size);
+  }
+
 }

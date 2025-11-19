@@ -64,7 +64,8 @@ class GameChunk implements Chunk {
 
   getAliveCells(): Coordinate[] {
     const result: Coordinate[] = [];
-    
+
+    console.log(this.serialize());
     for (const packed of this.cells) {
       result.push(this.unPackCoordinate(packed));
     }
@@ -108,7 +109,8 @@ class GameChunk implements Chunk {
 
   private deserialize(serial: string): void {
     if (!serial) return;
-
+    console.log(serial);
+    
     const binary = atob(serial);
 
     if (SerializeClass === Uint8Array) {
