@@ -1,13 +1,18 @@
-import { StyleSheet, Text, View, Keyboard, Button } from "react-native";
+import { StyleSheet, Text, View, Keyboard } from "react-native";
 import { PreferencesState, usePreferencesStore } from "../../store";
 import { Key, Mail, MicroConway } from "../../components";
 import { TextFormInpiut } from "../../components/Inputs";
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { RootStackParamList } from "..";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const animation = "AgUSFSAhIyQmJzI1QkVQUVNUVldiZXJ1";
 
 export function SingIn() {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { preferences } = usePreferencesStore();
   const styles = getStyles(preferences);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -27,8 +32,9 @@ export function SingIn() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.head, keyboardHeight > 0 && { flex: 0, height: 0 }]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: preferences.theme.crust }}>
+      <View style={styles.container}>
+        <View style={[styles.head, keyboardHeight > 0 && { flex: 0, height: 0 }]}>
         <Text
           style={{
             color: preferences.theme.text,
@@ -76,7 +82,7 @@ export function SingIn() {
 
         <View style={{ width: "100%", alignItems: "center", gap: 20 }}>
           <LinearGradient
-            colors={[preferences.theme.blue, preferences.theme.lavender]}
+            colors={[preferences.theme.yellow, preferences.theme.peach]}
             start={{ x: 0, y: 0.5 }}
             end={{ x: 1, y: 0.5 }}
             style={styles.button}
@@ -87,9 +93,9 @@ export function SingIn() {
           </LinearGradient>
           <Text style={{ color: preferences.theme.overlay1, fontFamily: preferences.font.thin, fontSize: 16 }}>or</Text>
           <Text
-            onPress={() => {}}
+            onPress={() => { navigation.navigate("SingUp") }}
             style={{
-              color: preferences.theme.peach,
+              color: preferences.theme.blue,
               fontFamily: preferences.font.bold,
               fontSize: 18,
             }}
@@ -98,7 +104,8 @@ export function SingIn() {
           </Text>
         </View>
       </View>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -107,6 +114,7 @@ const getStyles = ({ theme, font }: PreferencesState) =>
     container: {
       flex: 1,
       flexDirection: "column",
+      backgroundColor: theme.crust,
     },
     head: {
       flex: 3,

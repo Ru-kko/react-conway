@@ -8,10 +8,12 @@ export function TextFormInpiut({
   title,
   password = false,
   style,
+  hintColor,
   placeholder = "",
 }: {
   onChange: (value: string) => void;
   svg?: React.ReactNode;
+  hintColor?: string;
   title?: string;
   placeholder?: string;
   password?: boolean;
@@ -34,7 +36,7 @@ export function TextFormInpiut({
     >
       {title && (
         <Text
-          style={{ fontFamily: font.regular, color: theme.peach, fontSize: 20 }}
+          style={{ fontFamily: font.regular, color: hintColor ?? theme.peach, fontSize: 20 }}
         >
           {title}
         </Text>
