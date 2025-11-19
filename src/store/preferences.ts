@@ -17,6 +17,7 @@ export type PreferencesState = {
     regular: string;
     medium: string;
     bold: string;
+    extraBold: string;
   };
 };
 
@@ -27,7 +28,7 @@ interface PreferencesStore {
 }
 
 export const usePreferencesStore = create<PreferencesStore>((set, get) => ({
-  preferences: { isAppLoaded: false, theme: DarkTheme, font: { thin: "", regular: "", medium: "", bold: "" }   },
+  preferences: { isAppLoaded: false, theme: DarkTheme, font: { thin: "", regular: "", medium: "", bold: "", extraBold: "" }   },
   loadPreferences: async () => {
     const theme = await getConfiguredTheme();
     let fontsLoaded = true;
@@ -36,6 +37,7 @@ export const usePreferencesStore = create<PreferencesStore>((set, get) => ({
       regular: "Roboto_400Regular",
       medium: "Roboto_500Medium",
       bold: "Roboto_700Bold",
+      extraBold: "Roboto_800ExtraBold",
     };
 
     await Font.loadAsync({
@@ -53,6 +55,7 @@ export const usePreferencesStore = create<PreferencesStore>((set, get) => ({
         regular: "",
         medium: "",
         bold: "",
+        extraBold: "",
       };
     }
 
