@@ -9,7 +9,7 @@ class PlainWorld implements World {
   private chunks: Map<string, Chunk> = new Map();
 
   constructor(private size: number, chunkData?: Map<string, string>) {
-    if ((this.size + 1) % CHUNK_SIZE !== 0) throw new GameSizeError(this.size);
+    if ((size + 1) % CHUNK_SIZE !== 0) throw new GameSizeError(this.size);
 
     if (!chunkData) {
       return;
