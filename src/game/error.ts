@@ -15,7 +15,12 @@ export class OutOfBoundsError extends ConwayGameError {
 }
 
 export class GameSizeError extends ConwayGameError {
-  constructor(size: number) {
+  constructor(size: number, endSize?: number) {
+    if (endSize) { 
+      super(`The game size must be between ${size} and ${endSize}.`);
+      this.name = "GameSizeError";
+      return;
+    }
     super(`Invalid game size: ${size}. Size must be divisible by ${CHUNK_SIZE}.`);
     this.name = "InvalidSizeError";
   }
