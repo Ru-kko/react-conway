@@ -53,7 +53,6 @@ export const useBoardStore = create<BoardStore>((set, get) => ({
 
   stepGeneration() {
     const engine = get().engine;
-    console.log("Step");
     
     if (!engine) return;
 

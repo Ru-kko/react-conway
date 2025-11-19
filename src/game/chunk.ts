@@ -109,7 +109,6 @@ class GameChunk implements Chunk {
 
   private deserialize(serial: string): void {
     if (!serial) return;
-    console.log(serial);
     
     const binary = atob(serial);
 
