@@ -26,6 +26,7 @@ export const GridLines = ({
   startY,
   endY,
   cellSize,
+  limit,
   h,
   w,
 }: {
@@ -34,13 +35,14 @@ export const GridLines = ({
   startY: number;
   endY: number;
   cellSize: number;
+  limit: number;
   h: number;
   w: number;
 }) => {
   const { preferences } = usePreferencesStore();
   const lines = [];
 
-  for (let x = startX; x <= endX; x++) {
+  for (let x = startX; x <= endX && (x <= limit || limit === 0); x++) {
     lines.push(
       <View
         key={`v-${x}`}
@@ -49,14 +51,14 @@ export const GridLines = ({
           left: x * cellSize,
           top: startY * cellSize,
           width: 1,
-          height: h * cellSize,
+          height: limit > 0 ? Math.min(limit * cellSize, h * cellSize) : h * cellSize,
           backgroundColor: preferences.theme.surface0,
         }}
       />
     );
   }
 
-  for (let y = startY; y <= endY; y++) {
+  for (let y = startY; y <= endY && (y <= limit || limit === 0); y++) {
     lines.push(
       <View
         key={`h-${y}`}
@@ -65,7 +67,7 @@ export const GridLines = ({
           left: startX * cellSize,
           top: y * cellSize,
           height: 1,
-          width: w * cellSize,
+          width: limit > 0 ? Math.min(limit * cellSize, w * cellSize ) : w * cellSize,
           backgroundColor: preferences.theme.surface0,
         }}
       />
@@ -105,9 +107,9 @@ export function BoardView({ engine, worldSize, toggleCell }: BoardViewProps) {
     const cellY = Math.floor(worldY / CELL_SIZE);
 
     if (
-      (worldSize > 0 && (cellX < 0 || cellX >= worldSize)) ||
-      cellY < 0 ||
-      cellY >= worldSize
+      worldSize > 0 && 
+      (cellX < 0 || cellX >= worldSize ||
+      cellY < 0 || cellY >= worldSize)
     ) {
       return;
     }
@@ -194,6 +196,7 @@ export function BoardView({ engine, worldSize, toggleCell }: BoardViewProps) {
                 endY={gridProps.endY}
                 h={viewport.height}
                 w={viewport.width}
+                limit={worldSize}
                 cellSize={CELL_SIZE}
               />
             )}
