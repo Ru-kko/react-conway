@@ -5,3 +5,4 @@ export * from "./Inputs";
 export * from "./svg";
 export * from "./CreateWorldView";
 export * from "./FullOpacityModal";
+export * from "./ThemeSelector"

@@ -140,3 +140,14 @@ export const Sun = ({
     />
   </Svg>
 );
+
+export const Computer = ({ style, fill = "#000" }: { style?: StyleProp<ViewStyle>; fill?: string }) => (
+  <Svg fill="none" viewBox="0 0 24 24" style={style}>
+    <Path
+      fill={fill}
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M2 6a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-6v1h2a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h2v-1H5a3 3 0 0 1-3-3zm3-1a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"
+    />
+  </Svg>
+);

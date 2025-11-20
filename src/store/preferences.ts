@@ -11,6 +11,7 @@ import { getConfiguredTheme, setConfiguredTheme, ThemeValue } from "../util";
 
 export type PreferencesState = {
   isAppLoaded: boolean;
+  configured: ThemeValue;
   theme: ColorScheme;
   font: {
     thin: string;
@@ -28,9 +29,10 @@ interface PreferencesStore {
 }
 
 export const usePreferencesStore = create<PreferencesStore>((set, get) => ({
-  preferences: { isAppLoaded: false, theme: DarkTheme, font: { thin: "", regular: "", medium: "", bold: "", extraBold: "" }   },
+  preferences: { isAppLoaded: false, configured: ThemeValue.DARK, theme: DarkTheme, font: { thin: "", regular: "", medium: "", bold: "", extraBold: "" }   },
   loadPreferences: async () => {
     const theme = await getConfiguredTheme();
+
     let fontsLoaded = true;
     let fonts = {
       thin: "Roboto_100Thin",
@@ -62,7 +64,8 @@ export const usePreferencesStore = create<PreferencesStore>((set, get) => ({
     set({
       preferences: {
         isAppLoaded: true,
-        theme,
+        configured: theme.theme,
+        theme: theme.scheme,
         font: fonts,
       },
     });
