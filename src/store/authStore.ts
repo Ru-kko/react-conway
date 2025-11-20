@@ -7,7 +7,6 @@ import { User } from "../typings";
 export interface AuthState {
   user: User | null;
   canUseBiometrics: boolean;
-  error: string | null;
 }
 
 interface AuthStore extends AuthState {
@@ -15,7 +14,7 @@ interface AuthStore extends AuthState {
   signIn(email: string, password: string): Promise<void>;
   signUp(email: string, password: string, username: String): Promise<void>;
   signOutUser(): Promise<void>;
-  clearError(): void;
+  validateBiometricSession(): Promise<void>;
 }
 
 const getStoredUser = async (): Promise<User | null> => {
@@ -36,7 +35,6 @@ const getStoredUser = async (): Promise<User | null> => {
 const useSessionStore = create<AuthStore>((set, get) => ({
   user: null,
   canUseBiometrics: false,
-  error: null,
 
   signIn: async (email: string, password: string) => {
     try {
@@ -44,10 +42,11 @@ const useSessionStore = create<AuthStore>((set, get) => ({
       set({ user });
     } catch (error: any) {
       if (error instanceof ConwayAppError) {
-        set({ error: error.message });
-        return;
+        throw error;
       }
-      set({ error: "An unexpected error occurred. Please try again." });
+
+      console.error("Unexpected error during sign in:", error);
+      throw new ConwayAppError("An unexpected error occurred. Please try again.");
     }
   },
 
@@ -57,10 +56,10 @@ const useSessionStore = create<AuthStore>((set, get) => ({
       set({ user });
     } catch (error: any) {
       if (error instanceof ConwayAppError) {
-        set({ error: error.message });
-        return;
+        throw error;
       }
-      set({ error: "An unexpected error occurred. Please try again." });
+      console.error("Unexpected error during sign up:", error);
+      throw new ConwayAppError("An unexpected error occurred. Please try again.");
     }
   },
 
@@ -82,9 +81,6 @@ const useSessionStore = create<AuthStore>((set, get) => ({
     set({ user });
   },
 
-  clearError: () => {
-    set({ error: null });
-  },
 }));
 
 export { useSessionStore };

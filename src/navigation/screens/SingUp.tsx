@@ -1,6 +1,16 @@
-import { StyleSheet, Text, View, Keyboard } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Keyboard,
+  TouchableOpacity,
+} from "react-native";
 import { Text as NavText } from "@react-navigation/elements";
-import { PreferencesState, usePreferencesStore } from "../../store";
+import {
+  PreferencesState,
+  usePreferencesStore,
+  useSessionStore,
+} from "../../store";
 import { Key, Mail, MicroConway } from "../../components";
 import { TextFormInpiut } from "../../components/Inputs";
 import { useEffect, useState } from "react";
@@ -9,14 +19,48 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "..";
+import { usePopupStore } from "../../store/poppupStorePortal";
 
 const animation = "AgUSFSAhIyQmJzI1QkVQUVNUVldiZXJ1";
 
 export function SingUp() {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { signUp, user } = useSessionStore();
+  const { showMessage } = usePopupStore();
   const { preferences } = usePreferencesStore();
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+    userName: "",
+    loading: false,
+  });
   const styles = getStyles(preferences);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  const hadleRegister = async () => {
+    try {
+      if (
+        userData.loading ||
+        !userData.email ||
+        !userData.password ||
+        !userData.userName
+      )
+        return;
+      setUserData((d) => ({ ...d, loading: true }));
+      await signUp(userData.email, userData.password, userData.userName);
+      navigation.replace("Home");
+    } catch (error: any) {
+      showMessage(error.message);
+    }
+    setUserData((d) => ({ ...d, loading: false }));
+  };
+
+  useEffect(() => {
+    if (user) {
+      navigation.replace("Home");
+    }
+  }, [user]);
 
   useEffect(() => {
     const showSub = Keyboard.addListener("keyboardDidShow", (e) => {
@@ -56,14 +100,18 @@ export function SingUp() {
             style={{ width: "100%" }}
             title="User Name"
             placeholder="Jonh Doe"
-            onChange={() => {}}
+            onChange={(text) => {
+              setUserData((d) => ({ ...d, userName: text }));
+            }}
           />
           <TextFormInpiut
             hintColor={preferences.theme.lavender}
             style={{ width: "100%" }}
             title="Email"
             placeholder="hello@world.com"
-            onChange={() => {}}
+            onChange={(text) => {
+              setUserData((d) => ({ ...d, email: text }));
+            }}
             svg={<Mail stroke={preferences.theme.lavender} />}
           />
           <TextFormInpiut
@@ -72,21 +120,23 @@ export function SingUp() {
             placeholder="••••••"
             hintColor={preferences.theme.lavender}
             password
-            onChange={() => {}}
+            onChange={(text) => {
+              setUserData((d) => ({ ...d, password: text }));
+            }}
             svg={<Key stroke={preferences.theme.lavender} />}
           />
 
           <View style={{ width: "100%", alignItems: "center", gap: 20 }}>
-            <LinearGradient
-              colors={[preferences.theme.blue, preferences.theme.lavender]}
-              start={{ x: 0, y: 0.5 }}
-              end={{ x: 1, y: 0.5 }}
-              style={styles.button}
-            >
-              <Text onPress={() => {}} style={styles.buttonText}>
-                Sign Up
-              </Text>
-            </LinearGradient>
+            <TouchableOpacity style={styles.button} onPress={hadleRegister}>
+              <LinearGradient
+                style={{ borderRadius: 100, width: "100%" }}
+                colors={[preferences.theme.blue, preferences.theme.lavender]}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+              >
+                <Text style={styles.buttonText}>Sign Up</Text>
+              </LinearGradient>
+            </TouchableOpacity>
             <Text
               style={{
                 color: preferences.theme.overlay1,
@@ -97,7 +147,9 @@ export function SingUp() {
               or
             </Text>
             <NavText
-              onPress={() => { navigation.navigate("SingIn") }}
+              onPress={() => {
+                navigation.navigate("SingIn");
+              }}
               style={{
                 color: preferences.theme.peach,
                 fontFamily: preferences.font.bold,
