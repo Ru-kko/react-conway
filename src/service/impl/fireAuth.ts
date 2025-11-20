@@ -14,10 +14,11 @@ import { FirebaseError } from "firebase/app";
 const UsersCollection = "users";
 
 const RegisterErors: Record<string, string> = {
-  'auth/invalid-password': 'The password is invalid or too weak.',
-  'auth/email-already-exists': 'The email address is already in use by another account.',
-  'auth/invalid-email': 'The email address is not valid.',
-}
+  "auth/invalid-password": "The password is invalid or too weak.",
+  "auth/email-already-exists":
+    "The email address is already in use by another account.",
+  "auth/invalid-email": "The email address is not valid.",
+};
 
 export class FireAuthenticationService implements AuthenticationService {
   constructor(private auth: Auth, private fireStore: Firestore) {}
@@ -30,13 +31,13 @@ export class FireAuthenticationService implements AuthenticationService {
         password
       );
       const firebaseUser = userCredential.user;
-      
+
       const docRef = doc(this.fireStore, UsersCollection, firebaseUser.uid);
       const snap = await getDoc(docRef);
       if (!snap.exists()) {
         throw new BadCredentialsError();
       }
-      
+
       const data = snap.data();
       return {
         email: data.email,
@@ -47,12 +48,15 @@ export class FireAuthenticationService implements AuthenticationService {
         throw error;
       }
 
-      if (error.code === 'auth/invalid-credential') {
+      if (error.code === "auth/invalid-credential") {
         throw new BadCredentialsError();
       }
 
       console.error("Error during sign in:", error);
-      throw new ConwayAppError("An unexpected error occurred during sign in.", error);
+      throw new ConwayAppError(
+        "An unexpected error occurred during sign in.",
+        error
+      );
     }
   }
 
@@ -64,7 +68,7 @@ export class FireAuthenticationService implements AuthenticationService {
         password
       );
       const persisted = userCredential.user;
-  
+
       await setDoc(doc(this.fireStore, UsersCollection, persisted.uid), {
         username: user.username,
         email: user.email,
@@ -74,36 +78,33 @@ export class FireAuthenticationService implements AuthenticationService {
       if (error instanceof ConwayAppError) {
         throw error;
       }
-      
-      const message = RegisterErors[error.code] || "An unexpected error occurred during registration.";
+
+      const message =
+        RegisterErors[error.code] ||
+        "An unexpected error occurred during registration.";
       console.error("Error during user registration:", error);
       throw new ConwayAppError(message, error);
     }
   }
 
   async getUserSession(): Promise<User | null> {
-    return new Promise((resolve) => {
-      onAuthStateChanged(this.auth, async (firebaseUser) => {
-        if (!firebaseUser) {
-          resolve(null);
-          return;
-        }
+    const firebaseUser = this.auth.currentUser;
+    if (!firebaseUser) {
+      return null;
+    }
 
-        const docRef = doc(this.fireStore, UsersCollection, firebaseUser.uid);
-        const snap = await getDoc(docRef);
+    const docRef = doc(this.fireStore, UsersCollection, firebaseUser.uid);
+    const snap = await getDoc(docRef);
 
-        if (!snap.exists()) {
-          resolve(null);
-          return;
-        }
+    if (!snap.exists()) {
+      return null;
+    }
 
-        const data = snap.data();
-        resolve({
-          email: data.email,
-          username: data.username,
-        });
-      });
-    });
+    const data = snap.data();
+    return {
+      email: data.email,
+      username: data.username,
+    };
   }
 
   async logOut(): Promise<void> {
