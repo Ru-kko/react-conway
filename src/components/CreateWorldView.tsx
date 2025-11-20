@@ -1,16 +1,33 @@
 import { TouchableOpacity, View, StyleSheet, Text } from "react-native";
-import { PreferencesState, usePreferencesStore } from "../store";
+import { PreferencesState, useBoardStore, usePreferencesStore } from "../store";
 import { BorderedGrid, BorderlessGrid, InfiniteVector } from "./svg";
 import { useState } from "react";
 import { WorldType } from "../constants";
 import { CHUNK_SIZE } from "../game/conf";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation";
+import { WorldFactoryClient } from "../game";
 
 export function CreateWorldView() {
   const { preferences } = usePreferencesStore();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const styles = getStyles(preferences);
 
   const [selected, setSelected] = useState<WorldType | null>(null);
   const [size, setSize] = useState<number>(CHUNK_SIZE);
+  const { createNewGame } = useBoardStore();
+
+  const onCreatePress = () => {
+    if (selected !== null) {
+      const worldFactory = WorldFactoryClient.getFactory(selected);
+      const finalSize = selected === WorldType.Infinite ? 0 : size;
+      const world = worldFactory.createNew({ size: finalSize });
+
+      createNewGame(world, finalSize);
+      navigation.navigate("Game", { size: finalSize });
+    }
+  }
 
   return (
     <View>
@@ -100,7 +117,7 @@ export function CreateWorldView() {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onCreatePress}>
           <Text
             style={{
               fontSize: 24,
