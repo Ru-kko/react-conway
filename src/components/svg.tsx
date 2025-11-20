@@ -100,3 +100,43 @@ export const InfiniteVector = ({
     />
   </Svg>
 );
+
+export const Moon = ({
+  style,
+  stroke = "#000",
+}: {
+  style?: StyleProp<ViewStyle>;
+  stroke?: string;
+}) => (
+  <Svg fill="none" viewBox="0 0 24 24" style={style}>
+    <Path
+      stroke={stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M3.32 11.684a9 9 0 0 0 17.357 3.348A9 9 0 0 1 8.32 6.683c0-1.18.23-2.32.644-3.353a9.003 9.003 0 0 0-5.645 8.354Z"
+    />
+  </Svg>
+);
+
+export const Sun = ({
+  fill = "#000",
+  style,
+}: {
+  fill?: string;
+  style?: StyleProp<ViewStyle>;
+}) => (
+  <Svg viewBox="0 0 24 24" fill="none" style={style}>
+    <Path d="M11 1a1 1 0 1 1 2 0v2a1 1 0 1 1-2 0z" fill={fill} />
+    <Path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M18 12a6 6 0 1 1-12 0 6 6 0 0 1 12 0m-9.938 0a3.938 3.938 0 1 0 7.876 0 3.938 3.938 0 0 0-7.876 0"
+      fill={fill}
+    />
+    <Path
+      d="M20.485 3.515a1 1 0 0 0-1.414 0l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414a1 1 0 0 0 0-1.414M1 13a1 1 0 1 1 0-2h2a1 1 0 1 1 0 2zm2.515-9.485a1 1 0 0 0 0 1.414l1.414 1.414A1 1 0 0 0 6.343 4.93L4.93 3.515a1 1 0 0 0-1.414 0M11 21a1 1 0 1 1 2 0v2a1 1 0 1 1-2 0zm-4.657-3.343a1 1 0 0 0-1.414 0L3.515 19.07a1 1 0 1 0 1.414 1.414l1.414-1.414a1 1 0 0 0 0-1.414M21 13a1 1 0 1 1 0-2h2a1 1 0 1 1 0 2zm-3.343 4.657a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414a1 1 0 0 0-1.414 0"
+      fill={fill}
+    />
+  </Svg>
+);
