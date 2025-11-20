@@ -37,7 +37,7 @@ module.exports = {
             "node_modules/@expo-google-fonts/roboto/400Regular/Roboto_400Regular.ttf",
             "node_modules/@expo-google-fonts/roboto/500Medium/Roboto_500Medium.ttf",
             "node_modules/@expo-google-fonts/roboto/700Bold/Roboto_700Bold.ttf",
-            "node_modules/@expo-google-fonts/roboto/900ExtraBold/Roboto_900ExtraBold.ttf"
+            "node_modules/@expo-google-fonts/roboto/800ExtraBold/Roboto_800ExtraBold.ttf"
           ]
         }
       ],
