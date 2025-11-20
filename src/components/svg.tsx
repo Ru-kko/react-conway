@@ -141,13 +141,38 @@ export const Sun = ({
   </Svg>
 );
 
-export const Computer = ({ style, fill = "#000" }: { style?: StyleProp<ViewStyle>; fill?: string }) => (
+export const Computer = ({
+  style,
+  fill = "#000",
+}: {
+  style?: StyleProp<ViewStyle>;
+  fill?: string;
+}) => (
   <Svg fill="none" viewBox="0 0 24 24" style={style}>
     <Path
       fill={fill}
       fillRule="evenodd"
       clipRule="evenodd"
       d="M2 6a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-6v1h2a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h2v-1H5a3 3 0 0 1-3-3zm3-1a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"
+    />
+  </Svg>
+);
+
+export const LogOut = ({
+  style,
+  stroke = "#000",
+}: {
+  style?: StyleProp<ViewStyle>;
+  stroke?: string;
+}) => (
+  <Svg viewBox="0 0 512 512" style={style}>
+    <Path
+      d="M304 336v40a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V136a40 40 0 0 1 40-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256"
+      fill="none"
+      stroke={stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={32}
     />
   </Svg>
 );

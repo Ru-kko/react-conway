@@ -1,24 +1,37 @@
 import { Text } from "@react-navigation/elements";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { PreferencesState, usePreferencesStore } from "../../store";
-import { CreateWorldView, FullOpacityModal, Gear, Loading } from "../../components";
+import {
+  PreferencesState,
+  usePreferencesStore,
+  useSessionStore,
+} from "../../store";
+import {
+  CreateWorldView,
+  FullOpacityModal,
+  Gear,
+  Loading,
+  LogOut,
+} from "../../components";
 import { useState } from "react";
 import { useRequireLogin } from "../../hooks/useRequireLogin";
+import { ThemeSelector } from "../../components/ThemeSelector";
 
 export function Home() {
   const { preferences } = usePreferencesStore();
+  const { signOutUser } = useSessionStore();
   const user = useRequireLogin();
   const styles = getStyles(preferences);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false); // Todo: replace with actual loading state
+  const [data, setData] = useState([]); // Todo: replace with saved worlds
   const [newWorldModalVisible, setNewWorldModalVisible] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.head}>
         <Text style={styles.title}>Hi, {user?.username}!</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setShowSettings(true)}>
           <Gear
             fill={preferences.theme.overlay2}
             style={{ width: 30, height: 30 }}
@@ -42,9 +55,42 @@ export function Home() {
       {newWorldModalVisible && (
         <FullOpacityModal
           title="Create World"
+          heightPercent={40}
           onDismiss={() => setNewWorldModalVisible(false)}
         >
           <CreateWorldView />
+        </FullOpacityModal>
+      )}
+      {showSettings && (
+        <FullOpacityModal
+          title="Settings"
+          heightPercent={30}
+          onDismiss={() => setShowSettings(false)}
+        >
+          <View
+            style={{
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <ThemeSelector />
+            <TouchableOpacity
+              onPress={() => signOutUser()}
+              style={{
+                height: 60,
+                width: 60,
+                backgroundColor: preferences.theme.mantle,
+                borderColor: preferences.theme.surface0,
+                borderWidth: 1,
+                padding: 5,
+                marginVertical: 10,
+                borderRadius: 10,
+              }}
+            >
+              <LogOut stroke={preferences.theme.red} />
+            </TouchableOpacity>
+          </View>
         </FullOpacityModal>
       )}
     </SafeAreaView>
