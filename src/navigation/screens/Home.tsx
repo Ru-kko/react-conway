@@ -55,7 +55,7 @@ export function Home() {
       {newWorldModalVisible && (
         <FullOpacityModal
           title="Create World"
-          heightPercent={40}
+          heightPercent={50}
           onDismiss={() => setNewWorldModalVisible(false)}
         >
           <CreateWorldView />
