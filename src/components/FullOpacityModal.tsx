@@ -19,22 +19,24 @@ interface FullOpacityModalProps {
   onDismiss: () => void;
   title: string;
   children?: React.ReactNode;
+  heightPercent?: number;
 }
 
 export function FullOpacityModal({
   onDismiss,
   title,
   children,
+  heightPercent = 60,
 }: FullOpacityModalProps) {
   const { preferences } = usePreferencesStore();
-  const styles = getStyles(preferences);
+  const styles = getStyles(preferences, heightPercent);
 
   const [fadeIn, fadeOut] = [FadeIn.duration(200), FadeOut.duration(300)];
   const [join, left] = [FadeInDown.duration(300), FadeOutDown.duration(200)];
 
   return (
     <Animated.View style={styles.container} entering={fadeIn} exiting={fadeOut}>
-      <View onTouchEnd={onDismiss} style={{ flex: 4, width: "100%" }} />
+      <View onTouchEnd={onDismiss} style={{ flex: 100 - heightPercent, width: "100%" }} />
       <Animated.View entering={join} exiting={left} style={styles.modalContent}>
         <KeyboardAvoidingView style={styles.keyboardAvoid} behavior="position">
           <Text style={styles.titleText}>{title}</Text>
@@ -45,7 +47,7 @@ export function FullOpacityModal({
   );
 }
 
-const getStyles = (prefs: PreferencesState) =>
+const getStyles = (prefs: PreferencesState, heightPercent: number) =>
   StyleSheet.create({
     container: {
       position: "absolute",
@@ -69,7 +71,7 @@ const getStyles = (prefs: PreferencesState) =>
     },
     modalContent: {
       width: "100%",
-      flex: 6,
+      flex: heightPercent,
       backgroundColor: prefs.theme.base,
       borderTopLeftRadius: 30,
       borderTopRightRadius: 30,
