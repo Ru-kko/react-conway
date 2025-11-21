@@ -7,7 +7,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StaticScreenProps, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { BoardView, Gear } from "../../components";
+import { BoardView, Gear, Next, PauseIcon, PlayIcon } from "../../components";
 import { RootStackParamList } from "..";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -26,9 +26,10 @@ export function Game({ route }: GameScreenNavigationProp) {
     generation,
     terminate,
     toggleAutoTick,
-    createNewGame,
     toggleCell,
+    stepGeneration,
     renderVersion,
+    isAutoTicking,
   } = useBoardStore();
   const styles = getStyles(preferences);
 
@@ -55,16 +56,53 @@ export function Game({ route }: GameScreenNavigationProp) {
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
-        <GestureHandlerRootView>
-          {engine && (
-            <BoardView
-              renderVersion={renderVersion}
-              worldSize={route.params.size}
-              toggleCell={toggleCell}
-              engine={engine}
+        <View style={styles.boardWrapper}>
+          <GestureHandlerRootView >
+            {engine && (
+              <BoardView
+                renderVersion={renderVersion}
+                worldSize={route.params.size}
+                toggleCell={toggleCell}
+                engine={engine}
+              />
+            )}
+          </GestureHandlerRootView>
+        </View>
+        <View style={styles.stateContainer}>
+          <TouchableOpacity
+            onPress={toggleAutoTick}
+            style={[
+              styles.stateOptionBox,
+              {
+                backgroundColor: isAutoTicking
+                  ? preferences.theme.red
+                  : preferences.theme.green,
+              },
+            ]}
+          >
+            {isAutoTicking ? <PauseIcon /> : <PlayIcon />}
+          </TouchableOpacity>
+          <TouchableOpacity
+            disabled={isAutoTicking}
+            onPress={() => !isAutoTicking && stepGeneration()}
+            style={[
+              styles.stateOptionBox,
+              {
+                backgroundColor: isAutoTicking
+                  ? preferences.theme.mantle
+                  : preferences.theme.blue,
+              },
+            ]}
+          >
+            <Next
+              stroke={
+                !isAutoTicking
+                  ? preferences.theme.surface0
+                  : preferences.theme.overlay1
+              }
             />
-          )}
-        </GestureHandlerRootView>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -106,8 +144,19 @@ const getStyles = (prefs: PreferencesState) =>
     boardWrapper: {
       width: "100%",
       height: "100%",
-      flex: 1,
+      flex: 8,
       justifyContent: "center",
       alignItems: "stretch",
-    }
+    },
+    stateContainer: {
+      flex: 2,
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "space-around",
+      alignItems: "center",
+    },
+    stateOptionBox: {
+      padding: 10,
+      borderRadius: 10,
+    },
   });
