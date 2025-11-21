@@ -176,3 +176,50 @@ export const LogOut = ({
     />
   </Svg>
 );
+
+export const Next = ({
+  stroke = "#000",
+  style,
+}: {
+  stroke?: string;
+  style?: StyleProp<ViewStyle>;
+}) => (
+  <Svg viewBox="0 0 24 24" width={24} height={24} style={style}>
+    <Path
+      d="M15.337 12.422L5.768 18.51A.5.5 0 0 1 5 18.089V5.911a.5.5 0 0 1 .768-.422l9.57 6.09a.5.5 0 0 1 0 .843ZM19 5v14"
+      stroke={stroke}
+      fill="none"
+      strokeLinecap="round"
+      strokeWidth="2"
+    />
+  </Svg>
+);
+
+export const PlayIcon = ({
+  stroke = "#000",
+  style,
+}: {
+  stroke?: string;
+  style?: StyleProp<ViewStyle>;
+}) => (
+  <Svg fill="none" viewBox="0 0 24 24" width={24} height={24} style={style}>
+    <Path
+      stroke={stroke}
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M16.658 9.286c1.44.9 2.16 1.35 2.407 1.926a2 2 0 0 1 0 1.576c-.247.576-.967 1.026-2.407 1.926L9.896 18.94c-1.598.999-2.397 1.498-3.056 1.445a2 2 0 0 1-1.446-.801C5 19.053 5 18.111 5 16.226V7.774c0-1.885 0-2.827.394-3.358a2 2 0 0 1 1.446-.801c.66-.053 1.458.446 3.056 1.445l6.762 4.226Z"
+    />
+  </Svg>
+);
+
+export const PauseIcon = ({stroke = "#000", style}: {stroke?: string; style?: StyleProp<ViewStyle>}) => (
+  <Svg fill="none" viewBox="0 0 24 24" width={24} height={24} style={style}>
+    <Path
+      stroke={stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M14 19V5a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2ZM10 19V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2Z"
+    />
+  </Svg>
+);
